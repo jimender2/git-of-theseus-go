@@ -1,7 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"os"
 
 	"github.com/go-git/go-git/v5"
 )
@@ -24,19 +26,20 @@ var ignoreFileTypes [14]string = [14]string{
 }
 
 func main() {
-	fmt.Println("Hello, world.")
+	var gitRepoPath string
+	flag.StringVar(&gitRepoPath, "repo", ".", "Git repository path")
+	flag.Parse()
 
-	// loop through everything in ignoreFileTypes
-	for _, ignoreFileType := range ignoreFileTypes {
-		fmt.Println(ignoreFileType)
-	}
+	fmt.Println(gitRepoPath)
 
-	_, err := git.PlainOpen("")
+	gitRepo, err := git.PlainOpen(gitRepoPath)
+
+	fmt.Println(gitRepo)
 
 	if err != nil {
-		fmt.Println("test")
-	} else {
-		fmt.Println("2")
+		fmt.Println("Unable to open the git repo. Do you have permission to view it?")
+		os.Exit(0)
 	}
 
+	fmt.Println("testing git repository")
 }
