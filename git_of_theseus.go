@@ -26,6 +26,14 @@ var ignoreFileTypes [14]string = [14]string{
 	"*.yml",
 }
 
+type tuple struct {
+	name, value interface{}
+}
+
+type void struct{}
+
+var member void
+
 func main() {
 	var gitRepoPath string
 	var gitRepoBranch string
