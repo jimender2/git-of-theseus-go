@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"strings"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
@@ -69,10 +71,26 @@ func main() {
 	cIter, err := gitRepo.Log(&git.LogOptions{From: ref.Hash()})
 
 	var count = 0
+
+	set := make(map[tuple]void)
 	// ... just iterates over the commits, printing it
 	err = cIter.ForEach(func(c *object.Commit) error {
 		// fmt.Println(c)
+		// fmt.Println(c.Author)
 		count = count + 1
+		commitdate := c.Committer.When
+		cohorttup := tuple{"cohort", commitdate}
+		set[cohorttup] = struct{}{}
+
+		authorName := c.Author.Name
+		authortup := tuple{"author", authorName}
+		set[authortup] = struct{}{}
+
+		emailSplit := strings.Split(c.Author.Email, "@")
+		domainName := emailSplit[len(emailSplit)-1]
+		domaintup := tuple{"domain", domainName}
+		set[domaintup] = struct{}{}
+
 		return nil
 	})
 
